@@ -10,9 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all project files
 COPY . .
 
-# Make sure .env is included (Render automatically provides environment variables)
-# EXPOSE is optional but good practice
+# Expose FastAPI port
 EXPOSE 8000
 
-# Start FastAPI using Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run Alembic migrations before starting FastAPI
+CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000
